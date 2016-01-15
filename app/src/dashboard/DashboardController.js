@@ -1,11 +1,14 @@
 (function(){
 
-  angular
-    .module('dashboard')
-    .controller('DashboardController', [DashboardController]);
+    angular
+        .module('openeApp.dashboard')
+        .controller('DashboardController', DashboardController);
     
-  function DashboardController() {
-    
-  };
+    DashboardController.$inject = ['$scope', 'authService'];
 
+    function DashboardController($scope, authService) {
+        var vm = this;
+
+        
+    }
 })();

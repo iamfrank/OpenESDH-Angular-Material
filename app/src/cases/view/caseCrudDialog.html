@@ -1,53 +1,95 @@
 <md-dialog aria-label="Case edit dialog">
-  <form>
+  <form name="form">
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
-        <h2>Create / edit case</h2>
+        <h2 ng-hide="editCase">{{ 'CASE.CREATE_CASE' | translate }}</h2>
+        <h2 ng-show="editCase">{{ 'CASE.EDIT_PROPERTIES' | translate }}</h2>
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px;min-width:20em;">
+      
       <md-input-container>
-        <label>Case title</label>
-        <input type="text" ng-model="caseTitle" required>
+        <label><span class="md-warn">*</span> {{ 'CASE.TITLE' | translate }}</label>
+        <input type="text" ng-model="case.title" required focus-me>
       </md-input-container>
+
       <md-input-container>
-        <label>Case status</label>
-        <input type="text" ng-model="caseStatus" required>
+        <label><span class="md-warn">*</span> {{ 'CASE.OWNER' | translate }}</label>
+        <md-select ng-model="case.owner" ng-controller="CaseController as vm" required>
+          <md-option ng-value="auth.nodeRef" ng-repeat="auth in vm.authorities">{{ auth.name }}</md-option>
+        </md-select>
       </md-input-container>
+
+      <div ng-controller="ClassificationController as classCtrl">
+        <md-chips ng-model="case.journalKey" md-autocomplete-snap
+                    md-require-match="true" required>
+          <md-autocomplete style="width: 20em;"
+                           ng-show="case.journalKey.length === 0"
+                           md-input-name="autocompleteField"
+                           md-input-minlength="2"
+                           md-selected-item="selectedItem"
+                           md-search-text="searchText"
+                           md-items="item in classCtrl.search(searchText, 'oe:journalKey')"
+                           md-item-text="item.name + ' ' + item.title"
+                           md-floating-label="{{'CASE.JOURNAL_KEY' | translate}}">
+            <md-item-template>
+                <span md-highlight-text="searchText">{{item.name}}</span>
+                <span md-highlight-text="searchText" class="muted">{{item.title}}</span>
+            </md-item-template>
+            <md-not-found>
+              {{ 'COMMON.NO_MATCHES' | translate }}
+            </md-not-found>
+          </md-autocomplete>
+            <md-chip-template>
+                <span>
+                  <strong>{{$chip.name}}</strong>
+                  <em>({{$chip.title}})</em>
+                </span>
+            </md-chip-template>
+        </md-chips>
+
+        <md-chips ng-model="case.journalFacet" md-autocomplete-snap
+                  md-require-match="true">
+          <md-autocomplete style="width: 20em;"
+                           ng-show="case.journalFacet.length === 0"
+                           md-input-name="autocompleteField"
+                           md-input-minlength="2"
+                           md-selected-item="selectedItem"
+                           md-search-text="searchText"
+                           md-items="item in classCtrl.search(searchText, 'oe:journalFacet')"
+                           md-item-text="item.name + ' ' + item.title"
+                           md-floating-label="{{'CASE.JOURNAL_FACET' | translate}}">
+            <md-item-template>
+                <span md-highlight-text="searchText">{{item.name}}</span>
+                <span md-highlight-text="searchText" class="muted">{{item.title}}</span>
+            </md-item-template>
+            <md-not-found>
+              {{ 'COMMON.NO_MATCHES' | translate }}
+            </md-not-found>
+          </md-autocomplete>
+            <md-chip-template>
+                <span>
+                  <strong>{{$chip.name}}</strong>
+                  <em>({{$chip.title}})</em>
+                </span>
+            </md-chip-template>
+        </md-chips>
+      </div>
+      
+      <md-datepicker ng-model="case.startDate" md-placeholder="{{ 'CASE.START_DATE' | translate }}"></md-datepicker>
+
       <md-input-container>
-        <label>Case owner:</label>
-        <input type="text" ng-model="caseOwner" required>
+        <label>{{ 'CASE.DESCRIPTION' | translate }}</label>
+        <textarea ng-model="case.description"></textarea>
       </md-input-container>
-      <md-input-container>
-        <label>Assigned to:</label>
-        <input type="text" ng-model="caseAssigned" required>
-      </md-input-container>
-      <md-input-container>
-        <label>Journal key</label>
-        <input type="text" ng-model="caseJournalKey" required>
-      </md-input-container>
-      <md-input-container>
-        <label>Start date</label>
-        <input type="text" ng-model="caseStartDate" required>
-      </md-input-container>
-      <md-input-container>
-        <label>End date</label>
-        <input type="text" ng-model="caseEndDate" required>
-      </md-input-container>
-      <md-input-container>
-        <label>Notes / Description</label>
-        <textarea ng-model="caseDesc"></textarea>
-      </md-input-container>
+      
     </md-dialog-content>
     <div class="md-actions" layout="row">
-      <md-button class="md-primary" ng-disabled="true">
-        Create / Save case
+      <md-button type="submit" class="md-primary" ng-click="vm.update(case)" ng-disabled="form.$invalid">
+        {{ 'COMMON.OK' | translate }}
       </md-button>
-      <md-button ng-click="cancel()">
-        Cancel
-      </md-button>
-      <md-button ng-disabled="true">
-        Archive case
+      <md-button type="button" ng-click="vm.cancel(form)">
+        {{ 'COMMON.CANCEL' | translate }}
       </md-button>
     </div>
   </form>

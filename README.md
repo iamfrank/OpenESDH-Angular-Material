@@ -10,7 +10,7 @@ The repository contains both ES5 and ES6 branches that are inherited from the fo
 
 #### Prerequisites
 
-You will need **git** to clone the material-start repository. You can get git from
+You will need **git** to clone the repository. You can get git from
 [http://git-scm.com/](http://git-scm.com/).
 
 We also use a number of node.js tools to initialize and test material-start. You must have node.js and
@@ -19,21 +19,21 @@ its package manager (npm) installed.  You can get them from [http://nodejs.org/]
 #### Clone material-start
 
 To get you started you can simply clone `master` branch from the
-[Material-Start](https://github.com/angular/material-start) repository and install the dependencies:
+[OpenESDH-UI](https://github.com/OpenESDH/OpenESDH-UI.git) repository and install the dependencies:
 
 > NOTE: The `master` branch contains the traditional, ES5 implementation familiar to Angular developers.
 
-Clone the material-start repository using [git][git]:
+Clone the material-start repository using [git](https://git-scm.com/):
 
 ```
-git clone https://github.com/iamfrank/OpenEDSH-Angular-Material.git
-cd OpenEDSH-Angular-Material
+git clone https://github.com/OpenESDH/OpenESDH-UI.git
+cd OpenEDSH-UI
 ```
 
 If you just want to start a new project without the material-start commit history then you can do:
 
 ```bash
-git clone --depth=1 https://github.com/iamfrank/OpenEDSH-Angular-Material.git <your-project-name>
+git clone --depth=1 https://github.com/OpenESDH/OpenESDH-UI.git <your-project-name>
 ```
 
 The `depth=1` tells git to only pull down one commit worth of historical data.
@@ -152,19 +152,36 @@ etc to function properly when an html page is opened via `file://` scheme instea
 
 ### Running the App during Development
 
-The angular-seed project comes pre-configured with a local development web server.  It is a node.js
-tool called [http-server][http-server].  You can install http-server globally:
+The app's services depend on a running OpenESDH server being proxied to the path /alfresco.
+
+To that end, Grunt tasks have been added to make this easy to do.
+
+To install (Grunt)[http://gruntjs.com/getting-started] CLI, run:
 
 ```
-npm install -g live-server
+sudo npm install -g grunt-cli
 ```
 
-Then you can start your own development web server to serve static files from a folder by running:
+To run and connect to OpenESDH server on the test.openesdh.dk server, run:
 
 ```
-cd app
-live-server
+grunt dev
 ```
 
-Alternatively, you can choose to configure your own webserver, such as apache or nginx. Just
-configure your server to serve the files under the `app/` directory.
+This server always runs the latest builds of the OpenESDH repository develop branch.
+
+
+To run and connect to a locally running OpenESDH server on localhost:8080, run:
+
+```
+grunt local
+```
+
+
+To run and connect to OpenESDH server on the demo.openesdh.dk server, run:
+
+```
+grunt demo-dev
+```
+
+This server runs demo-able versions of OpenESDH, but may be less up-to-date.

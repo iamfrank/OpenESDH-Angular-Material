@@ -6,3 +6,7 @@ tmp
 .DS_Store
 .idea
 app/jspm_packages
+.project
+.settings
+.tern-project
+nbproject/*
